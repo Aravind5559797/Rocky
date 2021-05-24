@@ -1,0 +1,109 @@
+﻿@model IEnumerable<Rocky.Models.Product>
+
+<div class="container">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Product List</h2>
+        </div>
+        <div class="col-6 text-right">
+            <a asp-action="Upsert" class="btn btn-primary"><i class="fas fa-plus"></i> Create a New Product </a>
+        </div>
+    </div>
+
+    <br />
+    <br />
+
+    @if (Model.Count() > 0)
+    {
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        Product Name
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                    <th>
+                        Application Name
+                    </th>
+                    <th>
+                        Category Name
+                    </th>
+                    <th>
+                        Short Description
+                    </th>
+                    <th>
+
+                    </th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var obj in Model)
+                {
+                <tr>
+                    <td>@obj.Name</td>
+                    <td>@obj.Price</td>
+                    <td>@obj.Application.Name</td>
+                    <td>@obj.Category.CategoryName</td>
+                    <td>@obj.ShortDescription</td>
+                    <td class="text-center">
+                        <div class="w-75 btn-group" role="group">
+                            <a asp-controller="Product" asp-action="Upsert" class="btn btn-primary  mx-2" asp-route-Id="@obj.Id"><i class="fas fa-edit"></i></a>
+
+                            <a asp-controller="Product" asp-action="Delete" class="btn btn-danger mx-2" asp-route-id="@obj.Id"><i class="fas fa-trash-alt"></i></a>
+
+                            @*<a class="btn btn-danger mx-2 @obj.Id" id="delete"><i class="fas fa-trash-alt"></i></a>*@
+                        </div>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No product exists</p>
+    }
+</div>
+
+@section Scripts{
+
+    <script>
+  /*      document.querySelector("#delete").addEventListener('click', sendRequest)*/
+
+        async function sendRequest() {
+            var serviceURL = 'https://localhost:44306/Product/TestFunc';
+            user = {test:"hello"}
+            try {
+                const response =
+                    await fetch(
+                        serviceURL, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json;charset=utf-8'
+                            },
+                            body: JSON.stringify(user)
+                    }
+
+                    );
+                //responded but there is an error
+                if (!response.ok) {
+                   console.log("no data")
+                }
+                else {
+                    const student = await response.json()
+                    console.log(student)
+                }
+
+            }
+            //no response , weird error that caused the service to crash etc.
+            catch (error) {
+                console.log(error)
+            }
+        }      
+    </script>
+
+    }
