@@ -134,7 +134,7 @@ namespace Rocky.Controllers
                     //retrieve object from database. We are adding AsNoTracking as there are 2 objects with the same Id
                     //when we update the database , ERC will not know which object to be used for update
                     //hence , we shal disable tracking for object retreived from the database
-                    var obj = _db.Product.AsNoTracking().FirstOrDefault(u => u.Id == productVM.Product.Id);
+                    var obj = _db.Product.FirstOrDefault(u => u.Id == productVM.Product.Id);
 
                     if (files.Count > 0)
                     {
